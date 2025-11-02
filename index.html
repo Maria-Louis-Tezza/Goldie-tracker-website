@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Precious Metals Tracker</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+    <header class="bg-primary text-white p-4">
+        <div class="container">
+            <h1 class="text-center mb-3">Precious Metals Tracker</h1>
+            <div class="metal-selector d-flex justify-content-center gap-2">
+                <button id="gold-btn" class="btn btn-light active" onclick="selectMetal('gold')">Gold</button>
+                <button id="silver-btn" class="btn btn-light" onclick="selectMetal('silver')">Silver</button>
+            </div>
+        </div>
+    </header>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+        <div class="container">
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    <button class="nav-link active" onclick="showSection('dashboard')">Dashboard</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" onclick="showSection('history')">History</button>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container my-4">
+        <section id="dashboard" class="active">
+            <div class="row g-4 mb-4">
+                <div class="col-md-6">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body text-center">
+                            <h2 class="card-title">Current Price</h2>
+                            <div class="price-display">
+                                <h3 id="current-price" class="text-primary">₹0.00</h3>
+                                <span id="price-change" class="badge bg-success">+0.00%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h2 class="card-title">Portfolio Value</h2>
+                            <div class="row g-3">
+                                <div class="col-6">
+                                    <h3>Total Investment</h3>
+                                    <p id="total-investment" class="fs-4">₹0.00</p>
+                                </div>
+                                <div class="col-6">
+                                    <h3>Current Value</h3>
+                                    <p id="current-value" class="fs-4">₹0.00</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+
+            <div class="row justify-content-center mt-4">
+                <div class="col-md-8 col-lg-6">
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                        <button class="btn btn-success btn-lg px-4" onclick="openTransactionModal('buy')">Buy</button>
+                        <button class="btn btn-warning btn-lg px-4" onclick="openTransactionModal('sell')">Sell</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="history">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
+                    <h2 class="mb-0">Transaction History</h2>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <select id="filter-period" class="form-select w-auto" onchange="filterHistory()">
+                            <option value="all">All Time</option>
+                            <option value="week">Last Week</option>
+                            <option value="month">Last Month</option>
+                            <option value="year">Last Year</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="exportToPDF()">Export to PDF</button>
+                        <button class="btn btn-danger" onclick="confirmClearHistory()">Clear History</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Weight (g)</th>
+                                <th>Price per gram (₹)</th>
+                                <th>Total Amount (₹)</th>
+                                <th>Current Value (₹)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-table-body">
+                            <!-- Transaction rows will be added here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card mt-4">
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-3 col-sm-6">
+                            <div class="card bg-light h-100">
+                                <div class="card-body text-center">
+                                    <h3 class="card-title">Total Buys</h3>
+                                    <p id="total-buys" class="card-text fs-4">₹0.00</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="card bg-light h-100">
+                                <div class="card-body text-center">
+                                    <h3 class="card-title">Total Sells</h3>
+                                    <p id="total-sells" class="card-text fs-4">₹0.00</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="card bg-light h-100">
+                                <div class="card-body text-center">
+                                    <h3 class="card-title">Net Investment</h3>
+                                    <p id="net-investment" class="card-text fs-4">₹0.00</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="card bg-light h-100">
+                                <div class="card-body text-center">
+                                    <h3 class="card-title">Current Holdings</h3>
+                                    <p id="current-holdings" class="card-text fs-4">0g</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Transaction Modal -->
+    <div id="transaction-modal" class="modal">
+        <div class="modal-content">
+            <h2 id="modal-title">New Transaction</h2>
+            <form id="transaction-form" name="transactionForm" onsubmit="return validateForm(event)">
+                <div class="input-group">
+                    <label>Amount Type</label>
+                    <select id="amount-type" name="amountType" onchange="toggleAmountInput()" >
+                        <option value="grams">Grams</option>
+                        <option value="amount">Amount ($)</option>
+                    </select>
+                </div>
+
+                <div class="input-group" id="grams-input">
+                    <label>Weight (grams)</label>
+                    <input type="number" id="weight" name="weight" step="0.01" min="0.01">
+                </div>
+
+                <div class="input-group" id="amount-input" style="display: none;">
+                    <label>Amount ($)</label>
+                    <input type="number" id="amount" name="amount" step="0.01" min="0.01" > 
+                </div>
+
+                <div class="input-group">
+                    <label>Date of Purchase</label>
+                    <select id="date-type" name="dateType" onchange="toggleDateInput()" >
+                        <option value="today">Today</option>
+                        <option value="custom">Custom Date</option>
+                    </select>
+                </div>
+
+                <div class="input-group" id="custom-date-input" style="display: none;">
+                    <label>Select Date</label>
+                    <input type="date" id="custom-date" name="customDate" >
+                </div>
+
+                <div class="modal-buttons">
+                    <button type="submit">Confirm</button>
+                    <button type="button" onclick="closeTransactionModal()">Cancel</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

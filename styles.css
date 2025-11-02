@@ -1,0 +1,355 @@
+/* styles.css */
+:root {
+    --gold-primary: #FFD700;
+    --gold-secondary: #FFA500;
+    --gold-accent: #FF8C00;
+    --gold-bg: #FFF8DC;
+    
+    --silver-primary: #C0C0C0;
+    --silver-secondary: #808080;
+    --silver-accent: #696969;
+    --silver-bg: #F5F5F5;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--gold-bg);
+    transition: background 0.3s ease;
+}
+
+body.silver-theme {
+    background: var(--silver-bg);
+}
+
+header {
+    background: linear-gradient(135deg, var(--gold-primary), var(--gold-secondary));
+    color: white;
+    padding: 2rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: background 0.3s ease;
+}
+
+body.silver-theme header {
+    background: linear-gradient(135deg, var(--silver-primary), var(--silver-secondary));
+}
+
+.metal-selector {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.metal-selector button {
+    padding: 0.5rem 1rem;
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: 2px solid white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.metal-selector button.active {
+    background: white;
+    color: var(--gold-accent);
+}
+
+body.silver-theme .metal-selector button.active {
+    color: var(--silver-accent);
+}
+
+.main-nav {
+    background: white;
+    padding: 1rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.nav-btn {
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: none;
+    color: var(--gold-accent);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+body.silver-theme .nav-btn {
+    color: var(--silver-accent);
+}
+
+.nav-btn.active {
+    border-bottom: 2px solid var(--gold-accent);
+}
+
+body.silver-theme .nav-btn.active {
+    border-bottom-color: var(--silver-accent);
+}
+
+main {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+section {
+    display: none;
+}
+
+section.active {
+    display: block;
+}
+
+.dashboard {
+    display: grid;
+    gap: 2rem;
+}
+
+.price-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.price-display, .value-display {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.price-display {
+    font-size: 2.5rem;
+    text-align: center;
+}
+
+#current-price {
+    color: var(--gold-accent);
+    font-weight: bold;
+}
+
+body.silver-theme #current-price {
+    color: var(--silver-accent);
+}
+
+#price-change {
+    font-size: 1.5rem;
+    margin-left: 1rem;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.buy-btn, .sell-btn {
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: transform 0.2s ease;
+}
+
+.buy-btn {
+    background: var(--gold-primary);
+    color: white;
+}
+
+.sell-btn {
+    background: var(--gold-secondary);
+    color: white;
+}
+
+body.silver-theme .buy-btn {
+    background: var(--silver-primary);
+}
+
+body.silver-theme .sell-btn {
+    background: var(--silver-secondary);
+}
+
+.buy-btn:hover, .sell-btn:hover {
+    transform: translateY(-2px);
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.history-controls {
+    display: flex;
+    gap: 1rem;
+}
+
+.export-btn {
+    padding: 0.5rem 1rem;
+    background: var(--gold-primary);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+body.silver-theme .export-btn {
+    background: var(--silver-primary);
+}
+
+.clear-history-btn {
+    padding: 0.5rem 1rem;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.history-table {
+    width: 100%;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.history-table th,
+.history-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.history-table th {
+    background: var(--gold-bg);
+    color: var(--gold-accent);
+}
+
+body.silver-theme .history-table th {
+    background: var(--silver-bg);
+    color: var(--silver-accent);
+}
+
+.history-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.summary-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.summary-card h3 {
+    color: var(--gold-accent);
+    margin-bottom: 0.5rem;
+}
+
+body.silver-theme .summary-card h3 {
+    color: var(--silver-accent);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+}
+
+.input-group {
+    margin-bottom: 1rem;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--gold-accent);
+}
+
+body.silver-theme .input-group label {
+    color: var(--silver-accent);
+}
+
+.input-group input, .input-group select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 2px solid var(--gold-primary);
+    border-radius: 4px;
+}
+
+body.silver-theme .input-group input, 
+body.silver-theme .input-group select {
+    border-color: var(--silver-primary);
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+.modal-buttons button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.modal-buttons button[type="submit"] {
+    background: var(--gold-primary);
+    color: white;
+}
+
+body.silver-theme .modal-buttons button[type="submit"] {
+    background: var(--silver-primary);
+}
+
+@media (max-width: 768px) {
+    .price-info {
+        grid-template-columns: 1fr;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .history-header {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .history-controls {
+        width: 100%;
+        flex-direction: column;
+    }
+}
